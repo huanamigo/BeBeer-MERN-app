@@ -30,6 +30,22 @@ export const createPost = (post: IPost) => async (dispatch: any) => {
       payload: data,
     });
   } catch (error) {
-    console.log(error);
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    reportError({ message });
   }
 };
+
+export const updatePost =
+  (id: string, post: IPost) => async (dispatch: any) => {
+    try {
+      const { data } = await api.updatePost(id, post);
+      dispatch({ type: 'UPDATE', payload: data });
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      reportError({ message });
+    }
+  };

@@ -1,23 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Form.module.scss';
+// @ts-ignore
 import FileBase from 'react-file-base64';
-import { useAppDispatch } from '../../hooks';
-import { createPost } from '../../actions/posts';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { createPost, updatePost } from '../../actions/posts';
+import { IPost } from '../../../interface';
 
-const Form = () => {
+interface IProps {
+  currentId: string;
+}
+
+const Form = ({ currentId }: IProps) => {
   const [postData, setPostData] = useState({
     title: '',
     message: '',
     creator: '',
-    tags: '',
+    tags: [''],
     selectedFile: '',
   });
   const dispatch = useAppDispatch();
+  const post = useAppSelector((state) =>
+    currentId ? state.posts.find((p: IPost) => p._id === currentId) : null
+  );
+
+  useEffect(() => {
+    if (post) {
+      setPostData(post);
+    }
+  }, [post]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(createPost(postData));
+    if (currentId) {
+      dispatch(updatePost(currentId, postData));
+    } else {
+      dispatch(createPost(postData));
+    }
   };
   const clearForm = () => {};
 
@@ -74,7 +93,9 @@ const Form = () => {
             name="tags"
             id="tags"
             value={postData.tags}
-            onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+            onChange={(e) =>
+              setPostData({ ...postData, tags: [e.target.value] })
+            }
           />
         </label>
         <div className={styles.fileInput}>
