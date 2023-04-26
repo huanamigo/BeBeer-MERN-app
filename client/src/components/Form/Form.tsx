@@ -8,9 +8,10 @@ import { IPost } from '../../../interface';
 
 interface IProps {
   currentId: string;
+  setCurrentId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Form = ({ currentId }: IProps) => {
+const Form = ({ currentId, setCurrentId }: IProps) => {
   const [postData, setPostData] = useState({
     title: '',
     message: '',
@@ -37,8 +38,18 @@ const Form = ({ currentId }: IProps) => {
     } else {
       dispatch(createPost(postData));
     }
+    clearForm();
   };
-  const clearForm = () => {};
+  const clearForm = () => {
+    setCurrentId('');
+    setPostData({
+      title: '',
+      message: '',
+      creator: '',
+      tags: [''],
+      selectedFile: '',
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -48,7 +59,7 @@ const Form = ({ currentId }: IProps) => {
         className={styles.form}
         onSubmit={handleSubmit}
       >
-        <h2>add a beer</h2>
+        <h2>{currentId ? 'Edit' : 'Add'} a beer</h2>
         <label htmlFor="creator">
           Creator
           <input
@@ -110,7 +121,13 @@ const Form = ({ currentId }: IProps) => {
         <button className={styles.submitButton} type="submit">
           Submit
         </button>
-        <button className={styles.submitButton} onClick={clearForm}>
+        <button
+          className={styles.submitButton}
+          onClick={(e) => {
+            e.preventDefault();
+            clearForm();
+          }}
+        >
           Reset
         </button>
       </form>

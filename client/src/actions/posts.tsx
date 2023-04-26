@@ -11,6 +11,7 @@ export const getPosts = () => async (dispatch: any) => {
       type: 'FETCH_ALL',
       payload: data,
     });
+    console.log(data);
   } catch (error) {
     let message;
     if (error instanceof Error) message = error.message;
@@ -49,3 +50,15 @@ export const updatePost =
       reportError({ message });
     }
   };
+
+export const deletePost = (id: string) => async (dispatch: any) => {
+  try {
+    await api.deletePost(id);
+    dispatch({ type: 'DELETE', payload: id });
+  } catch (error) {
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    reportError({ message });
+  }
+};

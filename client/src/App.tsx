@@ -12,12 +12,13 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getPosts());
-  }, []);
+    console.log(currentId);
+  }, [currentId, dispatch]);
 
   return (
     <div className={styles.container}>
       <Posts setCurrentId={setCurrentId} />
-      <Form currentId={currentId} />
+      <Form currentId={currentId} setCurrentId={setCurrentId} />
     </div>
   );
 };

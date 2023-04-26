@@ -9,11 +9,11 @@ import reducers from './reducers';
 const store = configureStore({ reducer: reducers });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <Provider store={store}>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
       <App />
-    </React.StrictMode>
-  </Provider>
+    </Provider>
+  </React.StrictMode>
 );
 
 export type RootState = ReturnType<typeof store.getState>;
