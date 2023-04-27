@@ -11,7 +11,6 @@ export const getPosts = () => async (dispatch: any) => {
       type: 'FETCH_ALL',
       payload: data,
     });
-    console.log(data);
   } catch (error) {
     let message;
     if (error instanceof Error) message = error.message;
@@ -55,6 +54,18 @@ export const deletePost = (id: string) => async (dispatch: any) => {
   try {
     await api.deletePost(id);
     dispatch({ type: 'DELETE', payload: id });
+  } catch (error) {
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    reportError({ message });
+  }
+};
+
+export const likePost = (id: string) => async (dispatch: any) => {
+  try {
+    const { data } = await api.likePost(id);
+    dispatch({ type: 'UPDATE', payload: data });
   } catch (error) {
     let message;
     if (error instanceof Error) message = error.message;

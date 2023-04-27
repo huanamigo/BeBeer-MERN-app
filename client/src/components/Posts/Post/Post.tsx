@@ -2,7 +2,7 @@ import React from 'react';
 import { IPost } from '../../../../interface';
 import moment from 'moment';
 import { useAppDispatch } from '../../../hooks';
-import { deletePost } from '../../../actions/posts';
+import { deletePost, likePost } from '../../../actions/posts';
 
 interface IProps {
   setCurrentId: React.Dispatch<React.SetStateAction<string>>;
@@ -34,7 +34,15 @@ const Post = ({
       >
         edit
       </button>
-      <button onClick={() => {}}>kciuk {likeCount}</button>
+      <button
+        onClick={() => {
+          if (_id) {
+            dispatch(likePost(_id));
+          }
+        }}
+      >
+        kciuk {likeCount}
+      </button>
       <button
         onClick={() => {
           if (_id) {
