@@ -1,4 +1,5 @@
 import * as api from '../api';
+import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
 import { IPost } from '../../interface';
 
 // action creators
@@ -8,7 +9,7 @@ export const getPosts = () => async (dispatch: any) => {
   try {
     const { data } = await api.fetchPosts();
     dispatch({
-      type: 'FETCH_ALL',
+      type: FETCH_ALL,
       payload: data,
     });
   } catch (error) {
@@ -26,7 +27,7 @@ export const createPost = (post: IPost) => async (dispatch: any) => {
     console.log(data);
 
     dispatch({
-      type: 'CREATE',
+      type: CREATE,
       payload: data,
     });
   } catch (error) {
@@ -41,7 +42,7 @@ export const updatePost =
   (id: string, post: IPost) => async (dispatch: any) => {
     try {
       const { data } = await api.updatePost(id, post);
-      dispatch({ type: 'UPDATE', payload: data });
+      dispatch({ type: UPDATE, payload: data });
     } catch (error) {
       let message;
       if (error instanceof Error) message = error.message;
@@ -53,7 +54,7 @@ export const updatePost =
 export const deletePost = (id: string) => async (dispatch: any) => {
   try {
     await api.deletePost(id);
-    dispatch({ type: 'DELETE', payload: id });
+    dispatch({ type: DELETE, payload: id });
   } catch (error) {
     let message;
     if (error instanceof Error) message = error.message;
@@ -65,7 +66,7 @@ export const deletePost = (id: string) => async (dispatch: any) => {
 export const likePost = (id: string) => async (dispatch: any) => {
   try {
     const { data } = await api.likePost(id);
-    dispatch({ type: 'UPDATE', payload: data });
+    dispatch({ type: UPDATE, payload: data });
   } catch (error) {
     let message;
     if (error instanceof Error) message = error.message;

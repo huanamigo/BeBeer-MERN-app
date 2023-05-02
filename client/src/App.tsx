@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import styles from './App.module.scss';
-import Posts from './components/Posts/Posts';
-import Form from './components/Form/Form';
-
-import { getPosts } from './actions/posts';
-import { useAppDispatch } from './hooks';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Home from './pages/Home';
 
 const App = () => {
-  const dispatch = useAppDispatch();
-  const [currentId, setCurrentId] = useState('');
-
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [currentId, dispatch]);
-
   return (
     <div className={styles.container}>
-      <Posts setCurrentId={setCurrentId} />
-      <Form currentId={currentId} setCurrentId={setCurrentId} />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 };
