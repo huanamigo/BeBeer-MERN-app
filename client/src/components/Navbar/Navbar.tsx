@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   const user = {
     result: {
-      imageURL: 'imageURL',
-      name: 'name',
+      imageURL: '',
+      name: '',
     },
   };
   return (
@@ -14,8 +14,9 @@ const Navbar = () => {
       <Link to="/">
         <h1>bebeer</h1>
       </Link>
+
       <div className={styles.profile}>
-        {user ? (
+        {user.result.name !== '' ? (
           <div>
             <img src={user.result.imageURL} alt={user.result.name} />
             <p>{user.result.name}</p>
