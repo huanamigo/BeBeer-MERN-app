@@ -4,12 +4,15 @@ import Input from './Input/Input';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { useAppDispatch } from '../../hooks';
 import { AUTH } from '../../constants/actionTypes';
+import jwtDecode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,6 +24,7 @@ const Auth = () => {
 
   return (
     <div className={styles.container}>
+      <h1>AUTORYZACJA</h1>
       <div className={styles.wrapper}>
         <button>{isSignup ? 'sign up' : 'sign in'}</button>
         <form
@@ -85,11 +89,16 @@ const Auth = () => {
           <GoogleLogin
             onSuccess={(res) => {
               const result = res?.clientId;
-              const token = res?.credential;
+              let decoded = null;
+              if (res.credential) {
+                decoded = jwtDecode(res.credential);
+              }
               console.log(res);
 
               try {
-                dispatch({ type: AUTH, data: { result, token } });
+                dispatch({ type: AUTH, data: { result, decoded } });
+
+                navigate('/');
               } catch (error) {
                 console.log(error);
               }

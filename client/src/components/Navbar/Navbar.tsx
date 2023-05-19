@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Navbar.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { LOGOUT } from '../../constants/actionTypes';
 
 const Navbar = () => {
-  const user = {
-    result: {
-      imageURL: '',
-      name: '',
-    },
+  const [user, setUser] = useState(
+    JSON.parse(localStorage?.getItem('profile') || '{}')
+  );
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(user);
+
+  useEffect(() => {
+    // const token = user?.token;
+
+    setUser(JSON.parse(localStorage.getItem('profile') || '{}'));
+  }, [location]);
+
+  const logout = () => {
+    dispatch({ type: LOGOUT });
+    navigate('/');
+    setUser('');
   };
+
   return (
     <div>
       <Link to="/">
@@ -16,16 +33,17 @@ const Navbar = () => {
       </Link>
 
       <div className={styles.profile}>
-        {user.result.name !== '' ? (
+        {user.decoded ? (
           <div>
-            <img src={user.result.imageURL} alt={user.result.name} />
-            <p>{user.result.name}</p>
-            <button>sign out</button>
+            <img src={user.decoded?.picture} alt={user.decoded?.name} />
+            <p>{user.decoded?.name}</p>
+            <button onClick={() => logout()}>sign out</button>
+            asd
           </div>
         ) : (
           <div>
             <Link to="/auth">
-              <button>sign in</button>
+              <button onClick={() => console.log(user)}>sign in</button>
             </Link>
           </div>
         )}
