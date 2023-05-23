@@ -6,27 +6,50 @@ import { useAppDispatch } from '../../hooks';
 import { AUTH } from '../../constants/actionTypes';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { signin, signup } from '../../actions/auth';
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isSignup) {
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
+    }
   };
 
-  const handleChange = () => {};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const clear = () => {};
+  const clear = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+  };
 
   return (
     <div className={styles.container}>
       <h1>AUTORYZACJA</h1>
       <div className={styles.wrapper}>
-        <button>{isSignup ? 'sign up' : 'sign in'}</button>
         <form
           className={styles.form}
           onSubmit={(e) => {
@@ -39,12 +62,14 @@ const Auth = () => {
                 name="firstName"
                 label="First Name"
                 type="text"
+                value={formData.firstName}
                 handleChange={handleChange}
               />
               <Input
                 name="lastName"
                 label="last Name"
                 type="text"
+                value={formData.lastName}
                 handleChange={handleChange}
               />
             </>
@@ -53,11 +78,13 @@ const Auth = () => {
             name="email"
             label="email"
             type="email"
+            value={formData.email}
             handleChange={handleChange}
           />
           <Input
             name="password"
             label="pass"
+            value={formData.password}
             type={showPassword ? 'text' : 'password'}
             handleChange={handleChange}
           />
@@ -73,6 +100,7 @@ const Auth = () => {
                 name="confirmPassword"
                 label="confirm pass"
                 type={showPassword ? 'text' : 'password'}
+                value={formData.confirmPassword}
                 handleChange={handleChange}
               />
               <button

@@ -5,9 +5,10 @@ interface IProps {
   label: string;
   type: string;
   handleChange: any;
+  value: string;
 }
 
-const Input = ({ name, label, type, handleChange }: IProps) => {
+const Input = ({ name, label, type, handleChange, value }: IProps) => {
   return (
     <div>
       <label htmlFor={name}>
@@ -17,6 +18,7 @@ const Input = ({ name, label, type, handleChange }: IProps) => {
           name={name}
           id={name}
           onChange={handleChange}
+          value={value}
           required
         />
       </label>

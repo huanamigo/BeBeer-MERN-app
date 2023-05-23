@@ -9,3 +9,10 @@ export interface IPost {
   likeCount?: number
 }
 
+export interface IFormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
