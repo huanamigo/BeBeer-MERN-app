@@ -33,10 +33,10 @@ const Navbar = () => {
       </Link>
 
       <div className={styles.profile}>
-        {user.decoded ? (
+        {user.name ? (
           <div>
-            <img src={user.decoded?.picture} alt={user.decoded?.name} />
-            <p>{user.decoded?.name}</p>
+            <img src={user.picture} alt={user.name} />
+            <p>{user.name}</p>
             <button onClick={() => logout()}>sign out</button>
             asd
           </div>

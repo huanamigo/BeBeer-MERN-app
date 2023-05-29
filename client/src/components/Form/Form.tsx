@@ -5,6 +5,7 @@ import FileBase from 'react-file-base64';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createPost, updatePost } from '../../actions/posts';
 import { IPost } from '../../../interface';
+import { useLocation } from 'react-router-dom';
 
 interface IProps {
   currentId: string;
@@ -15,7 +16,6 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
   const [postData, setPostData] = useState({
     title: '',
     message: '',
-    creator: '',
     tags: [''],
     selectedFile: '',
   });
@@ -23,29 +23,42 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
   const post = useAppSelector((state) =>
     currentId ? state.posts.find((p: IPost) => p._id === currentId) : null
   );
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem('profile') || '{}')
+  );
+
+  const location = useLocation();
 
   useEffect(() => {
     if (post) {
       setPostData(post);
     }
-  }, [post]);
+
+    setUser(JSON.parse(localStorage.getItem('profile') || '{}'));
+  }, [post, location]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (currentId) {
-      dispatch(updatePost(currentId, postData));
+      dispatch(
+        updatePost(currentId, { ...postData, name: user?.result?.name })
+      );
     } else {
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
     }
     clearForm();
   };
+
+  if (!user?.name) {
+    return <div>PLEASE SIGN IN TO CREATE</div>;
+  }
+
   const clearForm = () => {
     setCurrentId('');
     setPostData({
       title: '',
       message: '',
-      creator: '',
       tags: [''],
       selectedFile: '',
     });
@@ -60,18 +73,7 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
         onSubmit={handleSubmit}
       >
         <h2>{currentId ? 'Edit' : 'Add'} a beer</h2>
-        <label htmlFor="creator">
-          Creator
-          <input
-            type="text"
-            name="creator"
-            id="creator"
-            value={postData.creator}
-            onChange={(e) =>
-              setPostData({ ...postData, creator: e.target.value })
-            }
-          />
-        </label>
+
         <label htmlFor="title">
           title
           <input

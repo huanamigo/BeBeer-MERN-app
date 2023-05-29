@@ -1,5 +1,5 @@
 export interface IPost {
-  creator: string;
+  name: string;
   title: string;
   message: string;
   tags: string[];
