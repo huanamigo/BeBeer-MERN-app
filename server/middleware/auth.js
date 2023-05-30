@@ -4,21 +4,22 @@ dotenv.config();
 
 const auth = async (req, res, next) => {
   try {
-    console.log('REQUEST ' + req);
-    const token = req.headers.Authorization.split(' ')[1];
+    const token = req.headers.authorization.split(' ')[1];
 
-    const isCustomAuth = token.length < 500;
+    const isCustomAuth = token.length > 100;
 
     let decodedData;
 
     if (token && isCustomAuth) {
+      console.log('CUSTOM');
       decodedData = jwt.verify(token, process.env.SECRET);
+      console.log(decodedData.id);
 
-      req.userId = decodedData?.id;
+      req.userId = decodedData.id;
     } else {
-      decodedData = jwt.decode(token);
+      console.log('NIE CUSTOM');
 
-      req.userId = decodedData?.sub;
+      req.userId = token;
     }
 
     next();
@@ -28,3 +29,5 @@ const auth = async (req, res, next) => {
 };
 
 export default auth;
+
+//107331808882959634572

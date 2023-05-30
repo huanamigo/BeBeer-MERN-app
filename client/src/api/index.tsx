@@ -4,12 +4,17 @@ import { IPost, IFormData } from '../../interface';
 const API = axios.create({ baseURL: 'http://localhost:5000' });
 
 API.interceptors.request.use((req) => {
-  if (localStorage.getItem('profile')) {
+  if (JSON.parse(localStorage.getItem('profile') || '{}').token) {
     req.headers.Authorization = `Bearer ${
       JSON.parse(localStorage.getItem('profile') || '{}').token
     }`;
+  } else if (JSON.parse(localStorage.getItem('profile') || '{}').decoded) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem('profile') || '{}').decoded.sub
+    }`;
+  } else {
+    req.headers.Authorization = null;
   }
-
   return req;
 });
 

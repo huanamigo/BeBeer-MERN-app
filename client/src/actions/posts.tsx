@@ -13,6 +13,7 @@ export const getPosts = () => async (dispatch: any) => {
       payload: data,
     });
   } catch (error) {
+    console.log(error);
     let message;
     if (error instanceof Error) message = error.message;
     else message = String(error);

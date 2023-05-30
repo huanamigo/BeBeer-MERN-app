@@ -22,8 +22,8 @@ const Posts = ({ setCurrentId }: IProps) => {
             <Post
               key={post._id}
               title={post.title}
-              creator={post.creator}
               message={post.message}
+              name={post.name}
               tags={post.tags}
               selectedFile={post.selectedFile}
               createdAt={post.createdAt}

@@ -16,15 +16,17 @@ const Post = ({
   message,
   _id,
   likeCount,
+  name,
 }: IProps & IPost) => {
   const dispatch = useAppDispatch();
 
   return (
     <div>
-      <p>{title}</p>
-      <p>{moment(createdAt).fromNow()}</p>
-      <p>{tags.map((tag) => `#${tag} `)}</p>
-      <p>{message}</p>
+      <p>title: {title}</p>
+      <p>date: {moment(createdAt).fromNow()}</p>
+      <p>tags: {tags.map((tag) => `#${tag} `)}</p>
+      <p>message: {message}</p>
+      <p>name: {name}</p>
       <button
         onClick={() => {
           if (_id) {

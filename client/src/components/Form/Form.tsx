@@ -45,13 +45,19 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      if (user.decoded) {
+        dispatch(createPost({ ...postData, name: user?.decoded?.name }));
+        console.log(user);
+      } else {
+        dispatch(createPost({ ...postData, name: user?.result?.name }));
+        console.log(user?.result?.name);
+      }
     }
     clearForm();
   };
 
-  if (!user?.name) {
-    return <div>PLEASE SIGN IN TO CREATE</div>;
+  if (!user?.result?.name && !user?.decoded?.name) {
+    return <div>PLEASE SIGN IN TO ADD A BEER</div>;
   }
 
   const clearForm = () => {

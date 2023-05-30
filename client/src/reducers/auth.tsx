@@ -3,21 +3,13 @@ import { AUTH, LOGOUT } from '../constants/actionTypes';
 const authReducer = (state: any = { authData: null }, action: any) => {
   switch (action.type) {
     case AUTH:
-      console.log(action?.data);
-      if (action.data.decoded) {
-        localStorage.setItem(
-          'profile',
-          JSON.stringify({ ...action?.data.decoded })
-        );
-      } else {
-        localStorage.setItem(
-          'profile',
-          JSON.stringify({ ...action?.data.result })
-        );
-      }
+      console.log(action);
+
+      localStorage.setItem('profile', JSON.stringify({ ...action?.data }));
 
       return { ...state, authData: action?.data };
     case LOGOUT:
+      console.log(action);
       localStorage.setItem('profile', JSON.stringify({}));
       return { ...state, authData: null };
     default:

@@ -121,7 +121,7 @@ const Auth = () => {
               if (res.credential) {
                 decoded = jwtDecode(res.credential);
               }
-              console.log(res);
+              console.log(result, decoded);
 
               try {
                 dispatch({ type: AUTH, data: { result, decoded } });

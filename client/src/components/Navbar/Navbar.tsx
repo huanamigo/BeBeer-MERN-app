@@ -5,25 +5,51 @@ import { useAppDispatch } from '../../hooks';
 import { LOGOUT } from '../../constants/actionTypes';
 
 const Navbar = () => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage?.getItem('profile') || '{}')
+  const [localStorageProfile, setLocalStorageProfile] = useState(
+    JSON.parse(localStorage.getItem('profile') || '{"result": ""}')
   );
+  const [user, setUser] = useState({
+    name: '',
+    picture: '',
+    token: '',
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(user);
-
   useEffect(() => {
     // const token = user?.token;
-
-    setUser(JSON.parse(localStorage.getItem('profile') || '{}'));
+    setLocalStorageProfile(
+      JSON.parse(localStorage.getItem('profile') || '{"result": ""}')
+    );
   }, [location]);
+
+  useEffect(() => {
+    if (localStorageProfile.token) {
+      console.log('TOKEN');
+      setUser({
+        name: localStorageProfile.result.name,
+        picture: '',
+        token: localStorageProfile.token,
+      });
+    } else if (localStorageProfile.decoded) {
+      console.log('CGUJ');
+      setUser({
+        name: localStorageProfile.decoded.name,
+        picture: localStorageProfile.decoded.picture,
+        token: localStorageProfile.decoded.sub,
+      });
+    }
+  }, [localStorageProfile]);
 
   const logout = () => {
     dispatch({ type: LOGOUT });
     navigate('/');
-    setUser('');
+    setUser({
+      name: '',
+      picture: '',
+      token: '',
+    });
   };
 
   return (
@@ -33,12 +59,11 @@ const Navbar = () => {
       </Link>
 
       <div className={styles.profile}>
-        {user.name ? (
+        {user.name !== '' ? (
           <div>
             <img src={user.picture} alt={user.name} />
             <p>{user.name}</p>
             <button onClick={() => logout()}>sign out</button>
-            asd
           </div>
         ) : (
           <div>
