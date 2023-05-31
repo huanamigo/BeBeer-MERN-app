@@ -9,6 +9,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('TERAZ COS ROBIE');
     dispatch(getPosts());
   }, [currentId, dispatch]);
 

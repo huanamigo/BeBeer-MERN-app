@@ -15,7 +15,7 @@ const Post = ({
   tags,
   message,
   _id,
-  likeCount,
+  likes,
   name,
 }: IProps & IPost) => {
   const dispatch = useAppDispatch();
@@ -43,7 +43,7 @@ const Post = ({
           }
         }}
       >
-        kciuk {likeCount}
+        kciuk {likes?.length}
       </button>
       <button
         onClick={() => {

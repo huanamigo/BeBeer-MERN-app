@@ -27,7 +27,7 @@ const Posts = ({ setCurrentId }: IProps) => {
               tags={post.tags}
               selectedFile={post.selectedFile}
               createdAt={post.createdAt}
-              likeCount={post.likeCount}
+              likes={post.likes}
               _id={post._id}
               setCurrentId={setCurrentId}
             />

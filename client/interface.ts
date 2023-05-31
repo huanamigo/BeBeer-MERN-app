@@ -6,7 +6,7 @@ export interface IPost {
   selectedFile: string;
   _id?: string;
   createdAt?: Date;
-  likeCount?: number
+  likes?: string[]
 }
 
 export interface IFormData {
