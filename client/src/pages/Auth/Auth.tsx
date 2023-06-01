@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Auth.module.scss';
-import Input from './Input/Input';
+import Input from '../../components/Input/Input';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { useAppDispatch } from '../../hooks';
 import { AUTH } from '../../constants/actionTypes';

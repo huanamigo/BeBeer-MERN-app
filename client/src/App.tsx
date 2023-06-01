@@ -1,8 +1,8 @@
 import styles from './App.module.scss';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import Home from './pages/Home';
-import Auth from './components/Auth/Auth';
+import Home from './pages/Home/Home';
+import Auth from './pages/Auth/Auth';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GOOGLE_API_TOKEN } from './dev';
 

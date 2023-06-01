@@ -29,6 +29,7 @@ const Posts = ({ setCurrentId }: IProps) => {
               createdAt={post.createdAt}
               likes={post.likes}
               _id={post._id}
+              creator={post.creator}
               setCurrentId={setCurrentId}
             />
           ))}

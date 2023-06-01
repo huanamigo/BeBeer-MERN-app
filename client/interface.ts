@@ -3,6 +3,7 @@ export interface IPost {
   title: string;
   message: string;
   tags: string[];
+  creator: string;
   selectedFile: string;
   _id?: string;
   createdAt?: Date;

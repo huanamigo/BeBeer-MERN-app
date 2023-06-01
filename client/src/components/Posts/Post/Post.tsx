@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IPost } from '../../../../interface';
 import moment from 'moment';
 import { useAppDispatch } from '../../../hooks';
 import { deletePost, likePost } from '../../../actions/posts';
+import { useLocation } from 'react-router';
 
 interface IProps {
   setCurrentId: React.Dispatch<React.SetStateAction<string>>;
@@ -17,8 +18,18 @@ const Post = ({
   _id,
   likes,
   name,
+  creator,
 }: IProps & IPost) => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem('profile') || '{}')
+  );
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem('profile') || '{}'));
+  }, [location]);
 
   return (
     <div>
@@ -27,15 +38,7 @@ const Post = ({
       <p>tags: {tags.map((tag) => `#${tag} `)}</p>
       <p>message: {message}</p>
       <p>name: {name}</p>
-      <button
-        onClick={() => {
-          if (_id) {
-            setCurrentId(_id);
-          }
-        }}
-      >
-        edit
-      </button>
+
       <button
         onClick={() => {
           if (_id) {
@@ -45,15 +48,28 @@ const Post = ({
       >
         kciuk {likes?.length}
       </button>
-      <button
-        onClick={() => {
-          if (_id) {
-            dispatch(deletePost(_id));
-          }
-        }}
-      >
-        usun
-      </button>
+      {user?.result?._id === creator || user?.decoded?.sub === creator ? (
+        <button
+          onClick={() => {
+            if (_id) {
+              setCurrentId(_id);
+            }
+          }}
+        >
+          edit
+        </button>
+      ) : null}
+      {user?.result?._id === creator || user?.decoded?.sub === creator ? (
+        <button
+          onClick={() => {
+            if (_id) {
+              dispatch(deletePost(_id));
+            }
+          }}
+        >
+          usun
+        </button>
+      ) : null}
     </div>
   );
 };
