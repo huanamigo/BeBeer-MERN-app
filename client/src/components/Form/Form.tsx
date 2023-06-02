@@ -74,7 +74,7 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
     <div className={styles.container}>
       <form
         autoComplete="off"
-        noValidate
+        // noValidate
         className={styles.form}
         onSubmit={handleSubmit}
       >
@@ -86,10 +86,12 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
             type="text"
             name="title"
             id="title"
+            minLength={3}
             value={postData.title}
             onChange={(e) =>
               setPostData({ ...postData, title: e.target.value })
             }
+            required
           />
         </label>
         <label htmlFor="message">
@@ -98,10 +100,12 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
             type="text"
             name="message"
             id="message"
+            minLength={3}
             value={postData.message}
             onChange={(e) =>
               setPostData({ ...postData, message: e.target.value })
             }
+            required
           />
         </label>
 
@@ -111,10 +115,15 @@ const Form = ({ currentId, setCurrentId }: IProps) => {
             type="text"
             name="tags"
             id="tags"
+            minLength={3}
             value={postData.tags}
             onChange={(e) =>
-              setPostData({ ...postData, tags: e.target.value.split(',') })
+              setPostData({
+                ...postData,
+                tags: e.target.value.toLowerCase().split(','),
+              })
             }
+            required
           />
         </label>
         <div className={styles.fileInput}>

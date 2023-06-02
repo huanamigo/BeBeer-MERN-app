@@ -1,9 +1,9 @@
 export interface IPost {
-  name: string;
+  name: any;
   title: string;
   message: string;
   tags: string[];
-  creator: string;
+  creator?: string;
   selectedFile: string;
   _id?: string;
   createdAt?: Date;
