@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IPost, IFormData } from '../../interface';
+import { IPost, IFormData, ISearchQuery } from '../../interface';
 
 const API = axios.create({ baseURL: 'http://localhost:5000' });
 
@@ -19,6 +19,12 @@ API.interceptors.request.use((req) => {
 });
 
 export const fetchPosts = () => API.get('/posts');
+export const fetchPostsBySearch = (searchQuery: ISearchQuery) =>
+  API.get(
+    `/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${
+      searchQuery.tags
+    }`
+  );
 export const createPost = (newPost: any) => API.post<IPost>('/posts', newPost);
 export const updatePost = (id: string, updatedPost: IPost) =>
   API.patch(`/posts/${id}`, updatedPost);

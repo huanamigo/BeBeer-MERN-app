@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { getPostsBySearch } from '../../actions/posts';
+import { useAppDispatch } from '../../hooks';
 
 interface IProps {
   search: string;
@@ -11,34 +13,31 @@ const useQuery = () => {
 };
 
 const Search = ({ search, setSearch }: IProps) => {
-  // const [tags, setTags] = useState(['']);
+  const [tags, setTags] = useState(['']);
   const query = useQuery();
   const page = query.get('page') || 1;
   const searchQuery = query.get('searchQuery');
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(e.key);
     if (e.key === 'Enter') {
       searchPost();
     }
   };
 
   const searchPost = () => {
-    if (search.trim()) {
+    console.log(search);
+    if (search.trim() || tags) {
+      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+      navigate(
+        `/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`
+      );
     } else {
       navigate('/');
     }
   };
-
-  // const handleAddTags = (tag: string) => {
-  //   setTags([...tags, tag]);
-  // };
-
-  // const handleDeleteTags = (tagToDelete: string) => {
-  //   setTags(tags.filter((tag) => tag !== tagToDelete));
-  // };
 
   return (
     <div>
@@ -49,17 +48,16 @@ const Search = ({ search, setSearch }: IProps) => {
         onChange={(e) => setSearch(e.target.value)}
         onKeyDown={(e) => handleKeyPress(e)}
       />
-      {/* <input
+      <input
         type="text"
         name="search"
         placeholder="sercz baj tags"
-        onKeyDown={(e) => {
-          if (e.key === ' ') {
-            console.log((e.target as HTMLTextAreaElement).value.split(' '));
-            setTags((e.target as HTMLTextAreaElement).value.split(' '));
-          }
+        onChange={(e) => {
+          setTags(e.target.value.split(' '));
+          console.log(tags);
         }}
-      /> */}
+      />
+      <button onClick={searchPost}>sercz</button>
     </div>
   );
 };

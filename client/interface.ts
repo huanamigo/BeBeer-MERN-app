@@ -17,3 +17,8 @@ export interface IFormData {
     password: string;
     confirmPassword: string;
 }
+
+export interface ISearchQuery {
+  tags: string,
+  search: string
+}

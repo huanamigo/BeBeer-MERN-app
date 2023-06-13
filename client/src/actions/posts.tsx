@@ -1,6 +1,6 @@
 import * as api from '../api';
 import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
-import { IPost } from '../../interface';
+import { IPost, ISearchQuery } from '../../interface';
 
 // action creators
 
@@ -20,6 +20,22 @@ export const getPosts = () => async (dispatch: any) => {
     reportError({ message });
   }
 };
+
+export const getPostsBySearch =
+  (searchQuery: ISearchQuery) => async (dispatch: any) => {
+    try {
+      const {
+        data: { data },
+      } = await api.fetchPostsBySearch(searchQuery);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      let message;
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+      reportError({ message });
+    }
+  };
 
 export const createPost = (post: IPost) => async (dispatch: any) => {
   try {
