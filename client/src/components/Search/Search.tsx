@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { getPostsBySearch } from '../../actions/posts';
 import { useAppDispatch } from '../../hooks';
 
@@ -8,15 +8,8 @@ interface IProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
-
 const Search = ({ search, setSearch }: IProps) => {
   const [tags, setTags] = useState(['']);
-  const query = useQuery();
-  const page = query.get('page') || 1;
-  const searchQuery = query.get('searchQuery');
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

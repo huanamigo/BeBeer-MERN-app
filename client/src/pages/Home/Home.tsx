@@ -5,14 +5,22 @@ import { useAppDispatch } from '../../hooks';
 import { getPosts } from '../../actions/posts';
 import Pagination from '../../components/Pagination/Pagination';
 import Search from '../../components/Search/Search';
+import { useLocation } from 'react-router';
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const Home = () => {
   const [currentId, setCurrentId] = useState('');
   const [search, setSearch] = useState('');
   const dispatch = useAppDispatch();
+  const query = useQuery();
+  const searchQuery = query.get('searchQuery');
+  const page = Number(query.get('page')) || 1;
 
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getPosts(page));
   }, [currentId, dispatch]);
 
   return (
@@ -20,7 +28,7 @@ const Home = () => {
       <Search search={search} setSearch={setSearch} />
       <Form currentId={currentId} setCurrentId={setCurrentId} />
       <Posts setCurrentId={setCurrentId} />
-      <Pagination />
+      <Pagination page={page} />
     </>
   );
 };

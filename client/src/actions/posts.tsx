@@ -1,13 +1,19 @@
 import * as api from '../api';
-import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
+import {
+  FETCH_ALL,
+  CREATE,
+  UPDATE,
+  DELETE,
+  FETCH_BY_SEARCH,
+} from '../constants/actionTypes';
 import { IPost, ISearchQuery } from '../../interface';
 
 // action creators
 
 // i have no idea what type this could be, sorry
-export const getPosts = () => async (dispatch: any) => {
+export const getPosts = (page: number) => async (dispatch: any) => {
   try {
-    const { data } = await api.fetchPosts();
+    const { data } = await api.fetchPosts(page);
     dispatch({
       type: FETCH_ALL,
       payload: data,
@@ -27,7 +33,10 @@ export const getPostsBySearch =
       const {
         data: { data },
       } = await api.fetchPostsBySearch(searchQuery);
-      console.log(data);
+      dispatch({
+        type: FETCH_BY_SEARCH,
+        payload: data,
+      });
     } catch (error) {
       console.log(error);
       let message;
